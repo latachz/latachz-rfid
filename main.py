@@ -45,7 +45,7 @@ def connect():
 
                     cursor.execute(sql_insert, (new_name, id))
 
-                    db.commit()
+                    conn.commit()
 
                     print("User" + new_name + "\nSaved")
                     time.sleep(2)
