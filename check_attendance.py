@@ -4,6 +4,9 @@ from config import config
 import time
 import RPi.GPIO as GPIO
 from mfrc522 import SimpleMFRC522
+import datetime
+ 
+currentDT = datetime.datetime.now()
 
 reader = SimpleMFRC522()
 
@@ -31,7 +34,7 @@ def connect():
 
             if cursor.rowcount >= 1:
               print("Welcome " + result[1])
-              cursor.execute("INSERT INTO attendance (user_id) VALUES (%s)", (result[0],) )
+              cursor.execute("INSERT INTO attendance (user_id, clock_in) VALUES (%s, %s)", (result[0], currentDT) )
               conn.commit()
             else:
               print("User does not exist.")
