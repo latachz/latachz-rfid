@@ -1,0 +1,8 @@
+<h1>Show Attendance</h1>
+
+<ul>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.attendance_path(@conn, :edit, @attendance) %></span>
+<span><%= link "Back", to: Routes.attendance_path(@conn, :index) %></span>

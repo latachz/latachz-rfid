@@ -18,6 +18,7 @@ defmodule RfidLatachzWeb.Router do
 
     get "/", PageController, :index
     resources "/users", UserController
+    resources "/attendances", AttendanceController
   end
 
   # Other scopes may use custom stacks.
