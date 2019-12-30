@@ -1,20 +1,56 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+
 import psycopg2
 from config import config
- 
+import time
+import RPi.GPIO as GPIO
+from mfrc522 import SimpleMFRC522
+
+
 def connect():
     """ Connect to the PostgreSQL database server """
     conn = None
     try:
         # read connection parameters
         params = config()
- 
+
         # connect to the PostgreSQL server
         print('Connecting to the PostgreSQL database...')
         conn = psycopg2.connect(**params)
-      
+
         # create a cursor
         cur = conn.cursor()
+
+        reader = SimpleMFRC522()
+
+        try:
+            while True:
+                id, text = reader.read()
+                cursor.execute("SELECT id FROM USER WHERE rfid_uid="+str(id))
+                cursor.fetchone()
+
+                if cursor.rowcount >= 1:
+                    print("Overwrite\nexisting user?")
+                    overwrite = input("Overwrite (Y/N)? ")
+                    if overwrite[0] == "y" or overwrite[0] == 'y':
+                        print("Overwriting user.")
+                        time.sleep(1)
+                        sql_insert = "UPDATE users SET name = %s WHERE rfid_uid=%s"
+                    else:
+                        continue
+                else:
+                    sql_insert = "INSERT INTO users (name, rfid_uid) VALUES (%s, %s)"
+                    print("Enter new name")
+                    new_name = input("Name: ")
+
+                    cursor.execute(sql_insert, (new_name, id))
+
+                    db.commit()
+
+                    print("User" + new_name + "\nSaved")
+                    time.sleep(2)
+        finally:
+            GPIO.cleanup()
 
         print('Inserting user')
         cur.execute("INSERT INTO users (id, name) VALUES (%s, %s)", (id, name))
@@ -24,12 +60,13 @@ def connect():
         row = cur.fetchall()
 
         for r in row:
-                print(f"id: {r[0]} name: {r[1]}")
+            print(f"id: {r[0]} name: {r[1]}")
 
     finally:
         if conn is not None:
             conn.close()
             print('Database connection closed.')
- 
+
+
 if __name__ == '__main__':
     connect()
