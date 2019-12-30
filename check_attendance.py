@@ -6,8 +6,6 @@ import RPi.GPIO as GPIO
 from mfrc522 import SimpleMFRC522
 import datetime
 
-while True:
-  currentDT = datetime.datetime.now()
 
 reader = SimpleMFRC522()
 
@@ -29,6 +27,8 @@ def connect():
           while True:
             print('Place Card to\nrecord attendance')
             id, text = reader.read()
+
+            currentDT = datetime.datetime.now()
 
             cursor.execute("Select id, name FROM users WHERE rfid_uid="+str(id))
             result = cursor.fetchone()
