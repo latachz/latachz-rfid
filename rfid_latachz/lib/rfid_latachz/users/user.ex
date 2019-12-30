@@ -5,6 +5,7 @@ defmodule RfidLatachz.Users.User do
   schema "users" do
     field :name, :string
     field :rfid_uid, :integer
+    has_many :attendances, RfidLatachz.Attendances.Attendance
 
     timestamps()
   end

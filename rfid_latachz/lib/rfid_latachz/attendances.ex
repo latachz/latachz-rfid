@@ -7,6 +7,7 @@ defmodule RfidLatachz.Attendances do
   alias RfidLatachz.Repo
 
   alias RfidLatachz.Attendances.Attendance
+  alias RfidLatachz.Users
 
   @doc """
   Returns the list of attendances.
@@ -35,7 +36,10 @@ defmodule RfidLatachz.Attendances do
       ** (Ecto.NoResultsError)
 
   """
-  def get_attendance!(id), do: Repo.get!(Attendance, id)
+  def get_attendance!(id) do
+    Attendance
+    |> Repo.get(id)
+  end
 
   @doc """
   Creates a attendance.
@@ -101,4 +105,28 @@ defmodule RfidLatachz.Attendances do
   def change_attendance(%Attendance{} = attendance) do
     Attendance.changeset(attendance, %{})
   end
+
+  def list_user_attendances(%Users.User{} = user) do
+    Attendance
+    |> user_attendances_query(user)
+    |> Repo.all()
+  end
+
+  def get_user_attendance!(%Users.User{} = user) do
+    Attendance
+    |> user_attendances_query(user)
+    |> Repo.one!()
+  end
+
+  defp user_attendances_query(query, %Users.User{id: user_id}) do
+    from(a in query, where: a.user_id == ^user_id)
+  end
+
+  def attendances() do
+    query = from a in Attendance,
+     select: a.inserted_at,
+     where: a.user_id == ^2
+    Repo.all(query)
+  end
+
 end
