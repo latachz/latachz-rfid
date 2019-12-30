@@ -25,7 +25,7 @@ def connect():
         
         try:
           while True:
-            print('Place Card to\nrecord attendance')
+            print('Place Card to\nrecord attendances')
             id, text = reader.read()
 
             currentDT = datetime.datetime.now()
@@ -35,7 +35,7 @@ def connect():
 
             if cursor.rowcount >= 1:
               print("Welcome " + result[1])
-              cursor.execute("INSERT INTO attendance (user_id, inserted_at, updated_at) VALUES (%s, %s, %s)", (result[0], currentDT, currentDT) )
+              cursor.execute("INSERT INTO attendances (user_id, inserted_at, updated_at) VALUES (%s, %s, %s)", (result[0], currentDT, currentDT) )
               conn.commit()
             else:
               print("User does not exist.")
