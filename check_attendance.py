@@ -13,6 +13,7 @@ GPIO.setmode(GPIO.BCM)
 buzzer = 26
 
 GPIO.setup(buzzer, GPIO.OUT)
+GPIO.output(buzzer, GPIO.LOW)
 
 reader = SimpleMFRC522()
 
@@ -35,7 +36,7 @@ def connect():
             print('Place Card to\nrecord attendances')
             id, text = reader.read()
             GPIO.output(buzzer, GPIO.HIGH)
-            sleep(0.5)
+            time.sleep(0.1)
             GPIO.output(buzzer, GPIO.LOW)
 
             currentDT = datetime.datetime.now()
