@@ -5,6 +5,7 @@ from config import config
 import time
 import RPi.GPIO as GPIO
 from mfrc522 import SimpleMFRC522
+import datetime
 
 
 def connect():
