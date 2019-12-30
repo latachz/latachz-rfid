@@ -26,6 +26,7 @@ def connect():
         try:
             while True:
                 id, text = reader.read()
+                currentDT = datetime.datetime.now()
                 cursor.execute("SELECT id FROM users WHERE rfid_uid="+str(id))
                 cursor.fetchone()
 
@@ -39,11 +40,11 @@ def connect():
                     else:
                         continue
                 else:
-                    sql_insert = "INSERT INTO users (name, rfid_uid) VALUES (%s, %s)"
+                    sql_insert = "INSERT INTO users (name, rfid_uid) VALUES (%s, %s, %s, %s)"
                     print("Enter new name")
                     new_name = input("Name: ")
 
-                    cursor.execute(sql_insert, (new_name, id))
+                    cursor.execute(sql_insert, (new_name, id, currentDT, currentDT))
 
                     conn.commit()
 
@@ -53,7 +54,7 @@ def connect():
             GPIO.cleanup()
 
         print('Inserting user')
-        cur.execute("INSERT INTO users (id, name) VALUES (%s, %s)", (id, name))
+        cur.execute("INSERT INTO users (id, name) VALUES (%s, %s, %s, %s)", (new_name, id, currentDT, currentDT))
 
         cur.execute("SELECT id, name from users")
 
