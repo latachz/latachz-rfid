@@ -41,7 +41,7 @@ def connect():
                     else:
                         continue
                 else:
-                    sql_insert = "INSERT INTO users (name, rfid_uid) VALUES (%s, %s, %s, %s)"
+                    sql_insert = "INSERT INTO users (name, rfid_uid, inserted_at, updated_at) VALUES (%s, %s, %s, %s)"
                     print("Enter new name")
                     new_name = input("Name: ")
 
@@ -55,7 +55,7 @@ def connect():
             GPIO.cleanup()
 
         print('Inserting user')
-        cur.execute("INSERT INTO users (id, name) VALUES (%s, %s, %s, %s)", (new_name, id, currentDT, currentDT))
+        cur.execute("INSERT INTO users (id, name, inserted_at, updated_at) VALUES (%s, %s, %s, %s)", (new_name, id, currentDT, currentDT))
 
         cur.execute("SELECT id, name from users")
 
