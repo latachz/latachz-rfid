@@ -3,6 +3,7 @@ defmodule RfidLatachzWeb.UserController do
 
   alias RfidLatachz.Users
   alias RfidLatachz.Users.User
+  alias RfidLatachz.Repo
 
   def index(conn, _params) do
     users = Users.list_users()

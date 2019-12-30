@@ -2,8 +2,10 @@ defmodule RfidLatachz.Attendances.Attendance do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias RfidLatachz.Users
+
   schema "attendances" do
-    field :user_id, :id
+    belongs_to :user, Users.User
 
     timestamps()
   end

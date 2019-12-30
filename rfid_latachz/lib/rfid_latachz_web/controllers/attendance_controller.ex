@@ -1,8 +1,9 @@
 defmodule RfidLatachzWeb.AttendanceController do
   use RfidLatachzWeb, :controller
 
-  alias RfidLatachz.Attendances
+  alias RfidLatachz.{Attendances, Users}
   alias RfidLatachz.Attendances.Attendance
+  alias RfidLatachz.Users.User
 
   def index(conn, _params) do
     attendances = Attendances.list_attendances()
@@ -28,7 +29,8 @@ defmodule RfidLatachzWeb.AttendanceController do
 
   def show(conn, %{"id" => id}) do
     attendance = Attendances.get_attendance!(id)
-    render(conn, "show.html", attendance: attendance)
+    user = Users.get_user!(attendance.user_id)
+    render(conn, "show.html", attendance: attendance, user: user)
   end
 
   def edit(conn, %{"id" => id}) do
