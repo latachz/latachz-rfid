@@ -19,7 +19,7 @@ def connect():
         conn = psycopg2.connect(**params)
 
         # create a cursor
-        cur = conn.cursor()
+        cursor = conn.cursor()
 
         reader = SimpleMFRC522()
 
