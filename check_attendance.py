@@ -6,6 +6,13 @@ import RPi.GPIO as GPIO
 from mfrc522 import SimpleMFRC522
 import datetime
 
+GPIO.setwarnings(False)
+
+GPIO.setmode(GPIO.BCM)
+
+buzzer = 26
+
+GPIO.setup(buzzer, GPIO.OUT)
 
 reader = SimpleMFRC522()
 
@@ -27,6 +34,9 @@ def connect():
           while True:
             print('Place Card to\nrecord attendances')
             id, text = reader.read()
+            GPIO.output(buzzer, GPIO.HIGH)
+	          sleep(0.5)
+	          GPIO.output(buzzer, GPIO.LOW)
 
             currentDT = datetime.datetime.now()
 

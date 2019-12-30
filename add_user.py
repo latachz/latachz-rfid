@@ -7,6 +7,13 @@ import RPi.GPIO as GPIO
 from mfrc522 import SimpleMFRC522
 import datetime
 
+GPIO.setwarnings(False)
+
+GPIO.setmode(GPIO.BCM)
+
+buzzer = 26
+
+GPIO.setup(buzzer, GPIO.OUT)
 
 def connect():
     """ Connect to the PostgreSQL database server """
@@ -21,6 +28,10 @@ def connect():
 
         # create a cursor
         cursor = conn.cursor()
+
+        GPIO.output(buzzer, GPIO.HIGH)
+	    sleep(0.5)
+	    GPIO.output(buzzer, GPIO.LOW)
 
         reader = SimpleMFRC522()
 
