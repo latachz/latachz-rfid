@@ -35,8 +35,8 @@ def connect():
             print('Place Card to\nrecord attendances')
             id, text = reader.read()
             GPIO.output(buzzer, GPIO.HIGH)
-	          sleep(0.5)
-	          GPIO.output(buzzer, GPIO.LOW)
+            sleep(0.5)
+            GPIO.output(buzzer, GPIO.LOW)
 
             currentDT = datetime.datetime.now()
 
