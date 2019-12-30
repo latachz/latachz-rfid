@@ -26,7 +26,7 @@ def connect():
         try:
             while True:
                 id, text = reader.read()
-                cursor.execute("SELECT id FROM USER WHERE rfid_uid="+str(id))
+                cursor.execute("SELECT id FROM users WHERE rfid_uid="+str(id))
                 cursor.fetchone()
 
                 if cursor.rowcount >= 1:
@@ -61,9 +61,12 @@ def connect():
 
         for r in row:
             print(f"id: {r[0]} name: {r[1]}")
+        
+        conn.commit()
 
     finally:
         if conn is not None:
+            conn.commit()
             conn.close()
             print('Database connection closed.')
 
