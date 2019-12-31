@@ -30,8 +30,8 @@ def connect():
         cursor = conn.cursor()
 
         GPIO.output(buzzer, GPIO.HIGH)
-	    sleep(0.5)
-	    GPIO.output(buzzer, GPIO.LOW)
+	time.sleep(0.5)
+	GPIO.output(buzzer, GPIO.LOW)
 
         reader = SimpleMFRC522()
 
