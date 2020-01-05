@@ -46,11 +46,19 @@ git clone https://github.com/latachz/latachz-rfid.git
 
 #### Web interface
 
-1. Preparing:
+Install Elixir deps:
+
 ```sh
 cd web && mix deps.get
 ```
-2. Starting it:
+
+Install npm assets:
+
+```sh
+cd assets && npm install
+```
+
+Starting server:
 ```sh
 mix phx.server
 ```
