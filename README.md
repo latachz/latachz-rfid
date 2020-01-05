@@ -73,6 +73,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Kacper Latuszewski - [@twitter_handle](https://twitter.com/kacpx123) - kacpx123@gmail.com
+Kacper Latuszewski - [@kacpx123](https://twitter.com/kacpx123) - kacpx123@gmail.com
 
 
