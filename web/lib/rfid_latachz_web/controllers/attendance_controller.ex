@@ -4,9 +4,10 @@ defmodule RfidLatachzWeb.AttendanceController do
   alias RfidLatachz.{Attendances, Users}
   alias RfidLatachz.Attendances.Attendance
   alias RfidLatachz.Users.User
+  alias RfidLatachz.Repo
 
   def index(conn, _params) do
-    attendances = Attendances.list_attendances()
+    attendances = Attendances.list_attendances() |> Repo.preload(:user)
     render(conn, "index.html", attendances: attendances)
   end
 
@@ -27,10 +28,21 @@ defmodule RfidLatachzWeb.AttendanceController do
     end
   end
 
+  def add_attendance(conn, %{"attendance" => attendance_params}) do
+    case Attendances.create_attendance(attendance_params) do
+      {:ok, attendance} ->
+        conn
+        |> put_flash(:info, "Attendance created successfully.")
+        |> redirect(to: Routes.attendance_path(conn, :show, attendance))
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        render(conn, "new.html", changeset: changeset)
+    end
+  end
+
   def show(conn, %{"id" => id}) do
-    attendance = Attendances.get_attendance!(id)
-    user = Users.get_user!(attendance.user_id)
-    render(conn, "show.html", attendance: attendance, user: user)
+    attendance = Attendances.get_attendance!(id) |> Repo.preload(:user)
+    render(conn, "show.html", attendance: attendance)
   end
 
   def edit(conn, %{"id" => id}) do

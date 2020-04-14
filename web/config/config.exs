@@ -13,12 +13,6 @@ config :rfid_latachz, RfidLatachz.Repo,
   password: "pass",
   hostname: "localhost"
 
-config :rfid_latachz, RfidLatachz.Repo,
-  database: "rfid_latachz_repo",
-  username: "user",
-  password: "pass",
-  hostname: "localhost"
-
 config :rfid_latachz,
   ecto_repos: [RfidLatachz.Repo]
 
