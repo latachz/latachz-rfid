@@ -3,9 +3,8 @@ defmodule RfidLatachz.Users.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :name, :string
-    field :rfid_uid, :integer
-    has_many :attendances, RfidLatachz.Attendances.Attendance
+    field(:name, :string)
+    field(:rfid_uid, :integer)
 
     timestamps()
   end
@@ -15,5 +14,6 @@ defmodule RfidLatachz.Users.User do
     user
     |> cast(attrs, [:name, :rfid_uid])
     |> validate_required([:name, :rfid_uid])
+    |> unique_constraint(:rfid_uid, name: :rfid_uid)
   end
 end

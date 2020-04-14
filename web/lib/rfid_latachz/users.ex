@@ -18,8 +18,7 @@ defmodule RfidLatachz.Users do
 
   """
   def list_users do
-    User
-    |> Repo.all()
+    Repo.all(User)
   end
 
   @doc """
@@ -36,16 +35,7 @@ defmodule RfidLatachz.Users do
       ** (Ecto.NoResultsError)
 
   """
-
-  def get_user!(id) do
-    User
-    |> Repo.get(id)
-  end
-
-  def get_user_by(params) do
-    Repo.get_by(User, params)
-  end
-
+  def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
   Creates a user.

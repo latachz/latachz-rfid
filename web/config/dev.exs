@@ -68,9 +68,8 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Configure your database
 config :rfid_latachz, RfidLatachz.Repo,
-  username: "erkvaieflqdggn",
-  password: "d6ba3e6c7077f3993f53389d9ccf2d1097fe90a0dd227d91ee03ab33dfc3ea9f",
-  database: "dd957n0a8gv1it",
-  hostname: "ec2-54-247-72-30.eu-west-1.compute.amazonaws.com",
-  pool_size: 10,
-  ssl: true
+  username: "postgres",
+  password: "postgres",
+  database: "rfid_latachz_dev",
+  hostname: "localhost",
+  pool_size: 10
