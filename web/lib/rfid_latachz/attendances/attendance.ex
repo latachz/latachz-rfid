@@ -5,7 +5,7 @@ defmodule RfidLatachz.Attendances.Attendance do
   alias RfidLatachz.Users
 
   schema "attendances" do
-    belongs_to :user, Users.User
+    belongs_to(:user, Users.User)
 
     timestamps()
   end

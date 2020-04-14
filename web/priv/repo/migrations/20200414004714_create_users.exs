@@ -3,11 +3,12 @@ defmodule RfidLatachz.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add :name, :string
-      add :rfid_uid, :integer
+      add(:name, :string)
+      add(:rfid_uid, :integer)
 
       timestamps()
     end
 
+    create(unique_index(:users, [:rfid_uid]))
   end
 end
