@@ -1,0 +1,31 @@
+<h1>Listing Attendances</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, RfidLatachzWeb.AttendanceLive.FormComponent,
+    id: @attendance.id || :new,
+    title: @page_title,
+    action: @live_action,
+    attendance: @attendance,
+    return_to: Routes.attendance_index_path(@socket, :index) %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Attendance time</th>
+    </tr>
+  </thead>
+  <tbody id="attendances">
+    <%= for attendance <- @attendances do %>
+      <tr id="attendance-<%= attendance.id %>">
+      <td><%= attendance.user.name %></td>
+        <td><%= attendance.inserted_at %></td>
+        <td>
+          <span><%= live_redirect "Show", to: Routes.attendance_show_path(@socket, :show, attendance) %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

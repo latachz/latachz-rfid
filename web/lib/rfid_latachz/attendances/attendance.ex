@@ -2,10 +2,10 @@ defmodule RfidLatachz.Attendances.Attendance do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias RfidLatachz.Users
+  alias RfidLatachz.Users.User
 
   schema "attendances" do
-    belongs_to(:user, Users.User)
+    belongs_to(:user, User)
 
     timestamps()
   end

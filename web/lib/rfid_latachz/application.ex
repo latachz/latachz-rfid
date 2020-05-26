@@ -6,14 +6,17 @@ defmodule RfidLatachz.Application do
   use Application
 
   def start(_type, _args) do
-    # List all child processes to be supervised
     children = [
       # Start the Ecto repository
       RfidLatachz.Repo,
-      # Start the endpoint when the application starts
+      # Start the Telemetry supervisor
+      RfidLatachzWeb.Telemetry,
+      # Start the PubSub system
+      {Phoenix.PubSub, name: RfidLatachz.PubSub},
+      # Start the Endpoint (http/https)
       RfidLatachzWeb.Endpoint
-      # Starts a worker by calling: RfidLatachz.Worker.start_link(arg)
-      # {RfidLatachz.Worker, arg},
+      # Start a worker by calling: RfidLatachz.Worker.start_link(arg)
+      # {RfidLatachz.Worker, arg}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
