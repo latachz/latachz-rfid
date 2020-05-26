@@ -1,5 +1,5 @@
 {application,ecto_sql,
-             [{applications,[kernel,stdlib,elixir,logger,telemetry,
+             [{applications,[kernel,stdlib,elixir,logger,eex,telemetry,
                              db_connection,ecto]},
               {description,"SQL-based adapters for Ecto and database migrations"},
               {modules,['Elixir.Collectable.Ecto.Adapters.SQL.Stream',
@@ -15,7 +15,7 @@
                         'Elixir.Ecto.Adapters.SQL.Sandbox',
                         'Elixir.Ecto.Adapters.SQL.Sandbox.Connection',
                         'Elixir.Ecto.Adapters.SQL.Stream',
-                        'Elixir.Ecto.Migration',
+                        'Elixir.Ecto.Adapters.Tds','Elixir.Ecto.Migration',
                         'Elixir.Ecto.Migration.Command',
                         'Elixir.Ecto.Migration.Constraint',
                         'Elixir.Ecto.Migration.Index',
@@ -31,6 +31,6 @@
                         'Elixir.Mix.Tasks.Ecto.Migrations',
                         'Elixir.Mix.Tasks.Ecto.Rollback']},
               {registered,[]},
-              {vsn,"3.3.2"},
+              {vsn,"3.4.4"},
               {env,[{postgres_map_type,<<"jsonb">>}]},
               {mod,{'Elixir.Ecto.Adapters.SQL.Application',[]}}]}.

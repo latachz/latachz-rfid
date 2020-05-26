@@ -1,9 +1,10 @@
 {application,plug_crypto,
              [{applications,[kernel,stdlib,elixir,crypto]},
-              {description,"Crypto-related functionality for the web, used by Plug."},
-              {modules,['Elixir.Plug.Crypto',
+              {description,"Crypto-related functionality for the web"},
+              {modules,['Elixir.Plug.Crypto','Elixir.Plug.Crypto.Application',
                         'Elixir.Plug.Crypto.KeyGenerator',
                         'Elixir.Plug.Crypto.MessageEncryptor',
                         'Elixir.Plug.Crypto.MessageVerifier']},
               {registered,[]},
-              {vsn,"1.0.0"}]}.
+              {vsn,"1.1.2"},
+              {mod,{'Elixir.Plug.Crypto.Application',[]}}]}.

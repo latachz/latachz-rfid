@@ -1,0 +1,17 @@
+<h1>Show Attendance</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, RfidLatachzWeb.AttendanceLive.FormComponent,
+    id: @attendance.id,
+    title: @page_title,
+    action: @live_action,
+    attendance: @attendance,
+    return_to: Routes.attendance_show_path(@socket, :show, @attendance) %>
+<% end %>
+
+<ul>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.attendance_show_path(@socket, :edit, @attendance), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.attendance_index_path(@socket, :index) %></span>

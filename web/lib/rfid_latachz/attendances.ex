@@ -9,6 +9,10 @@ defmodule RfidLatachz.Attendances do
   alias RfidLatachz.Attendances.Attendance
   alias RfidLatachz.Users
 
+  alias Phoenix.PubSub
+
+  import Ecto
+
   @doc """
   Returns the list of attendances.
 
@@ -19,7 +23,7 @@ defmodule RfidLatachz.Attendances do
 
   """
   def list_attendances do
-    Repo.all(Attendance)
+    Repo.all(Attendance) |> Repo.preload(:user)
   end
 
   @doc """
@@ -36,10 +40,7 @@ defmodule RfidLatachz.Attendances do
       ** (Ecto.NoResultsError)
 
   """
-  def get_attendance!(id) do
-    Attendance
-    |> Repo.get(id)
-  end
+  def get_attendance!(id), do: Repo.get!(Attendance, id)
 
   @doc """
   Creates a attendance.
@@ -53,10 +54,14 @@ defmodule RfidLatachz.Attendances do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_attendance(attrs \\ %{}) do
-    %Attendance{}
+  def create_attendance(attrs \\ %{}, rfid_uid) do
+    user = Users.get_user_by_rfid_uid(rfid_uid)
+
+    user
+    |> build_assoc(:attendances)
     |> Attendance.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:attendance_created)
   end
 
   @doc """
@@ -78,7 +83,7 @@ defmodule RfidLatachz.Attendances do
   end
 
   @doc """
-  Deletes a Attendance.
+  Deletes a attendance.
 
   ## Examples
 
@@ -99,34 +104,19 @@ defmodule RfidLatachz.Attendances do
   ## Examples
 
       iex> change_attendance(attendance)
-      %Ecto.Changeset{source: %Attendance{}}
+      %Ecto.Changeset{data: %Attendance{}}
 
   """
-  def change_attendance(%Attendance{} = attendance) do
-    Attendance.changeset(attendance, %{})
+  def change_attendance(%Attendance{} = attendance, attrs \\ %{}) do
+    Attendance.changeset(attendance, attrs)
   end
 
-  def list_user_attendances(%Users.User{} = user) do
-    Attendance
-    |> user_attendances_query(user)
-    |> Repo.all()
+  def subscribe do
+    PubSub.subscribe(RfidLatachz.PubSub, "attendances")
   end
 
-  def get_user_attendance!(%Users.User{} = user) do
-    Attendance
-    |> user_attendances_query(user)
-    |> Repo.one!()
+  defp broadcast({:error, _} = error, _event), do: error
+  defp broadcast({:ok, attendance}, event) do
+    PubSub.broadcast(RfidLatachz.PubSub, "attendances", {event, attendance})
   end
-
-  defp user_attendances_query(query, %Users.User{id: user_id}) do
-    from(a in query, where: a.user_id == ^user_id)
-  end
-
-  def attendances() do
-    query = from a in Attendance,
-     select: a.inserted_at,
-     where: a.user_id == ^2
-    Repo.all(query)
-  end
-
 end

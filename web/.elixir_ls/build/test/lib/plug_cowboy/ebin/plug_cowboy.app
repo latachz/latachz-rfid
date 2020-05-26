@@ -1,5 +1,6 @@
 {application,plug_cowboy,
-             [{applications,[kernel,stdlib,elixir,logger,cowboy,plug]},
+             [{applications,[kernel,stdlib,elixir,logger,telemetry,cowboy,
+                             plug]},
               {description,"A Plug adapter for Cowboy"},
               {modules,['Elixir.Plug.Cowboy','Elixir.Plug.Cowboy.Conn',
                         'Elixir.Plug.Cowboy.Drainer',
@@ -7,5 +8,5 @@
                         'Elixir.Plug.Cowboy.Stream',
                         'Elixir.Plug.Cowboy.Translator']},
               {registered,[]},
-              {vsn,"2.1.0"},
+              {vsn,"2.2.2"},
               {mod,{'Elixir.Plug.Cowboy',[]}}]}.

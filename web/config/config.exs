@@ -13,9 +13,10 @@ config :rfid_latachz,
 # Configures the endpoint
 config :rfid_latachz, RfidLatachzWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "b6PrJLAcB45qfqSm2kIlRYIBu47MgDJNzwEgtiqDFeHhEPD872NIVwpFQ5Laned/",
-  render_errors: [view: RfidLatachzWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: RfidLatachz.PubSub, adapter: Phoenix.PubSub.PG2]
+  secret_key_base: "qCflETfaKSTMMP17olmLY3Cm5ImDnw2EiIJpqJxAeazHHFdlgu/lETMu95wJFQiQ",
+  render_errors: [view: RfidLatachzWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: RfidLatachz.PubSub,
+  live_view: [signing_salt: "ay38R677"]
 
 # Configures Elixir's Logger
 config :logger, :console,

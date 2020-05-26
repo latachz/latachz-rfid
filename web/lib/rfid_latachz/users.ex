@@ -37,6 +37,10 @@ defmodule RfidLatachz.Users do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user_by_rfid_uid(rfid_uid) do
+    Repo.get_by(User, rfid_uid: rfid_uid)
+  end
+
   @doc """
   Creates a user.
 
@@ -74,7 +78,7 @@ defmodule RfidLatachz.Users do
   end
 
   @doc """
-  Deletes a User.
+  Deletes a user.
 
   ## Examples
 
@@ -95,10 +99,10 @@ defmodule RfidLatachz.Users do
   ## Examples
 
       iex> change_user(user)
-      %Ecto.Changeset{source: %User{}}
+      %Ecto.Changeset{data: %User{}}
 
   """
-  def change_user(%User{} = user) do
-    User.changeset(user, %{})
+  def change_user(%User{} = user, attrs \\ %{}) do
+    User.changeset(user, attrs)
   end
 end
