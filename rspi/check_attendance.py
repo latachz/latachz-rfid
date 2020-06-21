@@ -1,70 +1,53 @@
 #!/usr/bin/env python
-import psycopg2
+
 from config import config
 import time
-import RPi.GPIO as GPIO
-from mfrc522 import SimpleMFRC522
+#import RPi.GPIO as GPIO
+#from mfrc522 import SimpleMFRC522
 import datetime
+import requests
+import json
 
-GPIO.setwarnings(False)
+URL = "http://localhost:4000/api/attendances"
 
-GPIO.setmode(GPIO.BCM)
+# GPIO.setwarnings(False)
 
-buzzer = 26
+# GPIO.setmode(GPIO.BCM)
 
-GPIO.setup(buzzer, GPIO.OUT)
-GPIO.output(buzzer, GPIO.LOW)
+# buzzer = 26
 
-reader = SimpleMFRC522()
+# GPIO.setup(buzzer, GPIO.OUT)
 
-def connect():
-    """ Connect to the PostgreSQL database server """
-    conn = None
+def main():
+    # GPIO.output(buzzer, GPIO.HIGH)
+	# time.sleep(0.5)
+	# GPIO.output(buzzer, GPIO.LOW)
+
+    # reader = SimpleMFRC522()
+
+
     try:
-        # read connection parameters
-        params = config()
- 
-        # connect to the PostgreSQL server
-        print('Connecting to the PostgreSQL database...')
-        conn = psycopg2.connect(**params)
-      
-        # create a cursor
-        cursor = conn.cursor()
-        
-        try:
-          while True:
-            print('Place Card to\nrecord attendances')
-            id, text = reader.read()
-            GPIO.output(buzzer, GPIO.HIGH)
-            time.sleep(0.1)
-            GPIO.output(buzzer, GPIO.LOW)
+        while True:
+            # uid, name = reader.read()
 
-            currentDT = datetime.datetime.now()
+            uid = 123456789
 
-            cursor.execute("Select id, name FROM users WHERE rfid_uid="+str(id))
-            result = cursor.fetchone()
-
-            if cursor.rowcount >= 1:
-              print("Welcome " + result[1])
-              cursor.execute("INSERT INTO attendances (user_id, inserted_at, updated_at) VALUES (%s, %s, %s)", (result[0], currentDT, currentDT) )
-              conn.commit()
+            r = requests.post(url=URL, headers={"Content-Type": "application/json"}, json={
+                'rfid_uid': uid
+            })
+            print(r.status_code)
+            
+            if (r.status_code==500):
+                print(f'User not found')
+                break
             else:
-              print("User does not exist.")
-            time.sleep(2)
-        finally:
-          GPIO.cleanup()
-
-        conn.commit()
-       
-       # close the communication with the PostgreSQL
-        cur.close()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+                print(f'Attendance checked on uid: {uid}')
+                break
+            
     finally:
-        if conn is not None:
-            conn.close()
-            print('Database connection closed.')
- 
- 
+        #GPIO.cleanup()
+        print("finished")
+
+
 if __name__ == '__main__':
-    connect()
+    main()

@@ -36,6 +36,7 @@ defmodule RfidLatachzWeb.Router do
     pipe_through :api
 
     post("/attendances", AttendanceController, :create)
+    post("/users", UserController, :create)
   end
 
   # Other scopes may use custom stacks.
