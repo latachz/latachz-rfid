@@ -40,7 +40,10 @@ defmodule RfidLatachz.Users do
   def get_user!(id), do: Repo.get!(User, id)
 
   def get_user_by_rfid_uid(rfid_uid) do
-    Repo.get_by(User, rfid_uid: rfid_uid)
+    case Repo.get_by(User, rfid_uid: rfid_uid) do
+      nil -> {:error, "User not found"}
+      user -> {:ok, user}
+    end
   end
 
   @doc """
