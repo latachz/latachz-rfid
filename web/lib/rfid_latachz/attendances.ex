@@ -23,7 +23,7 @@ defmodule RfidLatachz.Attendances do
 
   """
   def list_attendances do
-    Repo.all(Attendance) |> Repo.preload(:user)
+    Repo.all(Attendance |> order_by(desc: :inserted_at) ) |> Repo.preload(:user)
   end
 
   @doc """
@@ -55,13 +55,20 @@ defmodule RfidLatachz.Attendances do
 
   """
   def create_attendance(attrs \\ %{}, rfid_uid) do
-    user = Users.get_user_by_rfid_uid(rfid_uid)
+    case Users.get_user_by_rfid_uid(rfid_uid) do
+      {:ok, user} ->
+        user
+        |> build_assoc(:attendances)
+        |> Attendance.changeset(attrs)
+        |> Repo.insert()
+        |> broadcast(:attendance_created)
 
-    user
-    |> build_assoc(:attendances)
-    |> Attendance.changeset(attrs)
-    |> Repo.insert()
-    |> broadcast(:attendance_created)
+        {:ok, "Attendance created"}
+      {:error, _} ->
+        {:error, "User with this uid not found"}
+    end
+
+
   end
 
   @doc """

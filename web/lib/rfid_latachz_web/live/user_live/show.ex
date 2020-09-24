@@ -2,6 +2,7 @@ defmodule RfidLatachzWeb.UserLive.Show do
   use RfidLatachzWeb, :live_view
 
   alias RfidLatachz.Users
+  alias RfidLatachz.Repo
 
   @impl true
   def mount(_params, _session, socket) do
@@ -13,7 +14,7 @@ defmodule RfidLatachzWeb.UserLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:user, Users.get_user!(id))}
+     |> assign(:user, Users.get_user!(id) |> Repo.preload(:attendances))}
   end
 
   defp page_title(:show), do: "Show User"

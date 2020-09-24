@@ -2,7 +2,7 @@ defmodule RfidLatachzWeb.UserLive.Index do
   use RfidLatachzWeb, :live_view
 
   alias RfidLatachz.Users
-  alias RfidLatachz.Users.User
+  alias RfidLatachz.Repo
 
   @impl true
   def mount(_params, _session, socket) do
@@ -14,18 +14,6 @@ defmodule RfidLatachzWeb.UserLive.Index do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :edit, %{"id" => id}) do
-    socket
-    |> assign(:page_title, "Edit User")
-    |> assign(:user, Users.get_user!(id))
-  end
-
-  defp apply_action(socket, :new, _params) do
-    socket
-    |> assign(:page_title, "New User")
-    |> assign(:user, %User{})
-  end
-
   defp apply_action(socket, :index, _params) do
     socket
     |> assign(:page_title, "Listing Users")
@@ -33,14 +21,11 @@ defmodule RfidLatachzWeb.UserLive.Index do
   end
 
   @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    user = Users.get_user!(id)
-    {:ok, _} = Users.delete_user(user)
-
-    {:noreply, assign(socket, :users, list_users())}
+  def handle_info({:user_created, user}, socket) do
+    {:noreply, update(socket, :users, fn users -> [user |> Repo.preload(:attendances) | users] end)}
   end
 
   defp list_users do
-    Users.list_users()
+    Users.list_users() |> Repo.preload(:attendances)
   end
 end

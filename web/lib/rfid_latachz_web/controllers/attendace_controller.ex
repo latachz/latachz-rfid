@@ -4,9 +4,15 @@ defmodule RfidLatachzWeb.AttendanceController do
   alias RfidLatachz.Attendances
 
   def create(conn, %{"rfid_uid" => rfid_uid}) do
-    Attendances.create_attendance(%{}, rfid_uid)
-    conn
-    |> put_status(:ok)
-    |> json(%{message: "Attendance checked"})
+    case Attendances.create_attendance(%{}, rfid_uid) do
+      {:ok, _} ->
+        conn
+        |> put_status(:ok)
+        |> json(%{message: "Attendance checked"})
+      {:error, msg} ->
+        conn
+        |> put_status(:not_found)
+        |> json(%{message: msg})
+    end
   end
 end

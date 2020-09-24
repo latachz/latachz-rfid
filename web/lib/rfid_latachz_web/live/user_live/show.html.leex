@@ -21,6 +21,22 @@
     <%= @user.rfid_uid %>
   </li>
 
+  <table>
+  <thead>
+    <tr>
+      <th>Attendance time</th>
+    </tr>
+  </thead>
+  <tbody id="attendances">
+    <%= for attendance <- @user.attendances do %>
+      <tr id="attendance-<%= attendance.id %>">
+        <td><%= attendance.inserted_at %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
 </ul>
 
 <span><%= live_patch "Edit", to: Routes.user_show_path(@socket, :edit, @user), class: "button" %></span>

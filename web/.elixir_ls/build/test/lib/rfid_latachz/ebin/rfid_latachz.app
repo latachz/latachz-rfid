@@ -28,6 +28,7 @@
                         'Elixir.RfidLatachzWeb.Router',
                         'Elixir.RfidLatachzWeb.Router.Helpers',
                         'Elixir.RfidLatachzWeb.Telemetry',
+                        'Elixir.RfidLatachzWeb.UserController',
                         'Elixir.RfidLatachzWeb.UserLive.Index',
                         'Elixir.RfidLatachzWeb.UserLive.Show',
                         'Elixir.RfidLatachzWeb.UserSocket']},

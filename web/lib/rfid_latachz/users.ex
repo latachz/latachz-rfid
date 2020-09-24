@@ -8,6 +8,8 @@ defmodule RfidLatachz.Users do
 
   alias RfidLatachz.Users.User
 
+  alias Phoenix.PubSub
+
   @doc """
   Returns the list of users.
 
@@ -38,7 +40,10 @@ defmodule RfidLatachz.Users do
   def get_user!(id), do: Repo.get!(User, id)
 
   def get_user_by_rfid_uid(rfid_uid) do
-    Repo.get_by(User, rfid_uid: rfid_uid)
+    case Repo.get_by(User, rfid_uid: rfid_uid) do
+      nil -> {:error, "User not found"}
+      user -> {:ok, user}
+    end
   end
 
   @doc """
@@ -57,6 +62,7 @@ defmodule RfidLatachz.Users do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
+    |> broadcast!(:user_created)
   end
 
   @doc """
@@ -104,5 +110,14 @@ defmodule RfidLatachz.Users do
   """
   def change_user(%User{} = user, attrs \\ %{}) do
     User.changeset(user, attrs)
+  end
+
+  def subscribe() do
+    PubSub.subscribe(RfidLatachz.PubSub, "users")
+  end
+
+  defp broadcast!({:error, _} = error, _event), do: error
+  defp broadcast!({:ok, attendance}, event) do
+    PubSub.broadcast!(RfidLatachz.PubSub, "users", {event, attendance})
   end
 end
